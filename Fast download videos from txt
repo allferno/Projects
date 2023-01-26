@@ -1,0 +1,21 @@
+import re
+import urllib.request
+import webbrowser
+
+
+import youtube_dl
+
+x = open('oppening.txt', "r")
+for m in range(1, 31):
+    search_keyword = x.readlines(0 + m)
+    preobrazoval = str(search_keyword)
+    html = urllib.request.urlopen("https://www.youtube.com/results?search_query=" + preobrazoval)
+    video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
+    output = ("https://www.youtube.com/watch?v=" + video_ids[0])
+    webbrowser.open_new(output)
+
+    ydl_opts = {}
+    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        ydl.download([output])
+    print("Загрузка файла прошла успешно")
+    print(" ")
